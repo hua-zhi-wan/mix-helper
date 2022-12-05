@@ -5,20 +5,117 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> TITLE </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <title>Mix Helper - KAGA</title>
 </head>
 
 <body id="app">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <div class="container">
+        <div>
+            <h3>BPM:</h3>
+            <form action="#">
+                <label>
+                    <input type="number" v-model="bpm" @input="update()">
+                </label>
+            </form>
+        </div>
+        <hr/>
+        <div class="flex-container">
+            <div class="flex-item">
+                <h2>Compressor</h2>
+                <h4>Release Time:</h4>
+                <ul>
+                    <li v-for="val in computed.compressor">{{val}}</li>
+                </ul>
+            </div>
+    
+            <div class="flex-item">
+                <h2>Delay</h2>
+                <ul>
+                    <li v-for="val in computed.delay">{{val}}</li>
+                </ul>
+            </div>
+            
+            <div class="flex-item">
+                <h2>Reverb</h2>
+                <h4>Pre-delay</h4>
+                <span>Plate:</span>
+                <ul>
+                    <li v-for="val in computed.predelay.plate">{{val}}</li>
+                </ul>
+                <span>Room:</span>
+                <ul>
+                    <li v-for="val in computed.predelay.room">{{val}}</li>
+                </ul>
+                <span>Hall:</span>
+                <ul>
+                    <li v-for="val in computed.predelay.hall">{{val}}</li>
+                </ul>
+    
+                <h4>Time</h4>
+                <span>Room:</span>
+                <ul>
+                    <li v-for="val in computed.time.room">{{val}}</li>
+                </ul>
+                <span>Hall:</span>
+                <ul>
+                    <li v-for="val in computed.time.hall">{{val}}</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/petite-vue@0.4.1/dist/petite-vue.iife.min.js"></script>
+    <style>
+        .container {
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+        }
+        .flex-item {
+            flex: 1;
+        }
+        ul {
+            padding-left: 2em;
+        }
+    </style>
     <script>
         PetiteVue.createApp({
+            bpm: 0,
+            factors: [1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32, 64],
+            computed: PetiteVue.reactive({
+                compressor: [],
+                predelay: {
+                    plate: [], room: [], hall: []
+                },
+                time: {
+                    plate: [], room: []
+                },
+                delay: []
+            }),
+            update() {
+                const bpm = this.bpm
+                if (bpm < 0 || !bpm) {
+                    return
+                }
 
+                const baseTime = 60 * 1000 / bpm
+                const values = this.factors.map(i => Math.round(i * baseTime))
+
+                this.computed.compressor = values.filter(i => i <= 800 && i >= 50).map(i => i + ' ms')
+
+                this.computed.predelay.plate = values.filter(i => i >= 10 && i <= 100).map(i => i + ' ms')
+                this.computed.predelay.room = values.filter(i => i >= 10 && i <= 30).map(i => i + ' ms')
+                this.computed.predelay.hall = values.filter(i => i >= 30 && i <= 100).map(i => i + ' ms')
+
+                this.computed.time.room = values.filter(i => i >= 300 && i <= 1000).map(i => i + ' ms')
+                this.computed.time.hall = values.filter(i => i >= 1500 && i <= 4000).map(i => i + ' ms')
+
+                this.computed.delay = [64, 32, 16, 8, 4, 2].map(i => [i, Math.round(baseTime / i * 4)]).map(v => '1/' + v[0] + ' - ' + v[1] + ' ms')
+            }
         }).mount('#app')
     </script>
 </body>
