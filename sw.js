@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith((async () => {
-    if (/http|extension/.test(event.request.url)) {
+    if (/http(?!s)|extension/.test(event.request.url)) {
       return await fetch(event.request);
     }
     const cache = await caches.open(CACHE_NAME);
