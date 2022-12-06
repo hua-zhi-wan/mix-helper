@@ -6,117 +6,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mix Helper - KAGA</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
-<body id="app">
+<body id="app" @vue:mounted="update()">
     <div class="container">
         <div>
             <h3>BPM:</h3>
             <form action="#">
                 <label>
-                    <input type="number" v-model="bpm" @input="update()">
+                    <input type="number" v-model="bpm" @input="update()" />
                 </label>
             </form>
         </div>
-        <hr/>
+        <hr />
         <div class="flex-container">
             <div class="flex-item">
                 <h2>Compressor</h2>
                 <h4>Release Time:</h4>
                 <ul>
-                    <li v-for="val in computed.compressor">{{val}}</li>
+                    <li v-for="val in computed.compressor">{{val}} ms</li>
                 </ul>
             </div>
-    
+
             <div class="flex-item">
                 <h2>Delay</h2>
                 <ul>
-                    <li v-for="val in computed.delay">{{val}}</li>
+                    <li v-for="val in computed.delay"><span class="li-left">1/{{val[0]}}</span><span
+                            class="li-right">{{val[1]}} ms</span></li>
                 </ul>
             </div>
-            
+
             <div class="flex-item">
                 <h2>Reverb</h2>
                 <h4>Pre-delay</h4>
                 <span>Plate:</span>
                 <ul>
-                    <li v-for="val in computed.predelay.plate">{{val}}</li>
+                    <li v-for="val in computed.predelay.plate">{{val}} ms</li>
                 </ul>
                 <span>Room:</span>
                 <ul>
-                    <li v-for="val in computed.predelay.room">{{val}}</li>
+                    <li v-for="val in computed.predelay.room">{{val}} ms</li>
                 </ul>
                 <span>Hall:</span>
                 <ul>
-                    <li v-for="val in computed.predelay.hall">{{val}}</li>
+                    <li v-for="val in computed.predelay.hall">{{val}} ms</li>
                 </ul>
-    
+
                 <h4>Time</h4>
                 <span>Room:</span>
                 <ul>
-                    <li v-for="val in computed.time.room">{{val}}</li>
+                    <li v-for="val in computed.time.room">{{val}} ms</li>
                 </ul>
                 <span>Hall:</span>
                 <ul>
-                    <li v-for="val in computed.time.hall">{{val}}</li>
+                    <li v-for="val in computed.time.hall">{{val}} ms</li>
                 </ul>
             </div>
         </div>
-        
+        <hr />
+        <div>
+            Author: Hana Yabuki <a href="https://github.com/HanaYabuki">@github</a> <a href="https://space.bilibili.com/496956009">@bilibili</a>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/petite-vue@0.4.1/dist/petite-vue.iife.min.js"></script>
-    <style>
-        .container {
-            margin: 0 auto;
-            max-width: 1200px;
-        }
-        .flex-container {
-            display: flex;
-            flex-direction: row;
-        }
-        .flex-item {
-            flex: 1;
-        }
-        ul {
-            padding-left: 2em;
-        }
-    </style>
+    <script src="/js/petite-vue.iife.min.js"></script>
+    <script src="/js/index.js"></script>
     <script>
-        PetiteVue.createApp({
-            bpm: 0,
-            factors: [1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32, 64],
-            computed: PetiteVue.reactive({
-                compressor: [],
-                predelay: {
-                    plate: [], room: [], hall: []
-                },
-                time: {
-                    plate: [], room: []
-                },
-                delay: []
-            }),
-            update() {
-                const bpm = this.bpm
-                if (bpm < 0 || !bpm) {
-                    return
-                }
-
-                const baseTime = 60 * 1000 / bpm
-                const values = this.factors.map(i => Math.round(i * baseTime))
-
-                this.computed.compressor = values.filter(i => i <= 800 && i >= 50).map(i => i + ' ms')
-
-                this.computed.predelay.plate = values.filter(i => i >= 10 && i <= 100).map(i => i + ' ms')
-                this.computed.predelay.room = values.filter(i => i >= 10 && i <= 30).map(i => i + ' ms')
-                this.computed.predelay.hall = values.filter(i => i >= 30 && i <= 100).map(i => i + ' ms')
-
-                this.computed.time.room = values.filter(i => i >= 300 && i <= 1000).map(i => i + ' ms')
-                this.computed.time.hall = values.filter(i => i >= 1500 && i <= 4000).map(i => i + ' ms')
-
-                this.computed.delay = [64, 32, 16, 8, 4, 2].map(i => [i, Math.round(baseTime / i * 4)]).map(v => '1/' + v[0] + ' - ' + v[1] + ' ms')
-            }
-        }).mount('#app')
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' });
+        }
     </script>
 </body>
 

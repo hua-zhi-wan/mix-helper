@@ -1,0 +1,59 @@
+:root {
+    --black: rgb(51, 51, 51);
+    --white: rgb(247, 247, 247);
+}
+
+body {
+    color: var(--black);
+    background-color: var(--white);
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+ul,
+table {
+    padding-left: 2em;
+}
+
+.li-left {
+    display: inline-block;
+    width: 3em;
+}
+
+@media screen and (max-width: 720px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: var(--white);
+        background-color: var(--black);
+    }
+
+    a {
+        color: aquamarine;
+    }
+
+    a:hover,
+    a:active {
+        color: aqua;
+    }
+
+    a:visited {
+        color: coral;
+    }
+}
