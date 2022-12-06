@@ -36,5 +36,5 @@ PetiteVue.createApp({
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/js/sw.js', { scope: '/js/' });
+    navigator.serviceWorker.register('/sw.js', { scope: '/' });
 }

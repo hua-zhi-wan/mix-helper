@@ -10,6 +10,7 @@ self.addEventListener('install', event => {
       '/sw.js',
       '/index.html'
     ]);
+
   })());
 });
 
