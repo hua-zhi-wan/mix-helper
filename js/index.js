@@ -33,3 +33,8 @@ PetiteVue.createApp({
         this.computed.delay = [64, 32, 16, 8, 4, 2].map(i => [i, Math.round(baseTime / i * 4)])
     }
 }).mount('#app')
+
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/js/sw.js', { scope: '/js/' });
+}

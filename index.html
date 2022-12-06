@@ -33,8 +33,10 @@
             <div class="flex-item">
                 <h2>Delay</h2>
                 <ul>
-                    <li v-for="val in computed.delay"><span class="li-left">1/{{val[0]}}</span><span
-                            class="li-right">{{val[1]}} ms</span></li>
+                    <li v-for="val in computed.delay">
+                        <span class="li-fixed">1/{{val[0]}}</span>
+                        <span>{{val[1]}} ms</span>
+                    </li>
                 </ul>
             </div>
 
@@ -67,17 +69,13 @@
         </div>
         <hr />
         <div>
-            Author: Hana Yabuki <a href="https://github.com/HanaYabuki">@github</a> <a href="https://space.bilibili.com/496956009">@bilibili</a>
+            Author: Hana Yabuki <a href="https://github.com/HanaYabuki">@github</a> <a
+                href="https://space.bilibili.com/496956009">@bilibili</a>
         </div>
     </div>
 
     <script src="/js/petite-vue.iife.min.js"></script>
     <script src="/js/index.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js', { scope: '/' });
-        }
-    </script>
 </body>
 
 </html>

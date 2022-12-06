@@ -27,7 +27,7 @@ table {
     padding-left: 2em;
 }
 
-.li-left {
+.li-fixed {
     display: inline-block;
     width: 3em;
 }
@@ -45,15 +45,6 @@ table {
     }
 
     a {
-        color: aquamarine;
-    }
-
-    a:hover,
-    a:active {
-        color: aqua;
-    }
-
-    a:visited {
-        color: coral;
+        filter: invert(100%);
     }
 }
