@@ -1,5 +1,5 @@
 # Mix - Helper
-[`[Click Me]`](https://mix.kaga.ga)
+[`[Click Me]`](https://mix.huazhiwan.xyz)
 
 Mix parameter calculator - Input bpm to get all parameter references.  
 But in old-school css style.
